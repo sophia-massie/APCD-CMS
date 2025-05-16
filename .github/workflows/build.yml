@@ -3,8 +3,6 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths:
-      - "apcd_cms/**"
 
 jobs:
   build_commit:
