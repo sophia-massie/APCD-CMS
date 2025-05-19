@@ -7,9 +7,9 @@ https://txapcd.org/
 > [!TIP]
 > This project is built as a customization of a TACC <abbr title="Content Management System">CMS</abbr> website. To manage this project's CMS, reference [Core-CMS-Template Docs][core-cms-template-docs]. To develop this project's custom code, keep reading.
 
-## Build
+## Quick Start
 
-1. Navigate to project directory:
+1. Navigate to project directory:\
     <sup>This is a CMS that contains a Portal client application.</sup>
     ```sh
     cd to acpd-cms
@@ -44,7 +44,7 @@ https://txapcd.org/
    - Make the default page return as\
        `TemplateView.as_view(template_name='<template_name')`
    - Add API endpoints.\
-       _These endpoints are used in client._
+       _These endpoints are used in [Client](#client)._
 
 2. Update `views.py`:
    - `import` `JsonResponse`
@@ -71,7 +71,7 @@ https://txapcd.org/
 
 ### Template
 
-- Update first line
+- Update first line:
     - from `{% extends "standard.html" %}`
     - to `{% extends "apcd_cms/templates/standard.html" %}`
 - Add an element where the component will render e.g.
@@ -79,7 +79,7 @@ https://txapcd.org/
    <div id="list-registrations-root"></div>
    ```
 
-   _Give the element its unique `id` defined in `main.tsx`._
+   _Give the element its unique `id` as defined in `main.tsx`._
 
 
 
