@@ -90,4 +90,4 @@ https://txapcd.org/
 [Core CMS Template]: https://github.com/TACC/Core-CMS-Template
 [Core Portal Deployments]: https://github.com/TACC/Core-Portal-Deployments
 
-[core-cms-template-docs]: https://github.com/TACC/Core-CMS-Template/blob/v0.1.2/docs/README.md#tacc-custom-cms
+[core-cms-template-docs]: https://github.com/TACC/Core-CMS-Template/blob/v0.1.3/docs/README.md#tacc-custom-cms
