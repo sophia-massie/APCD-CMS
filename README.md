@@ -12,7 +12,7 @@ https://txapcd.org/
 1. Navigate to project directory:\
     <sup>This is a CMS that contains a Portal client application.</sup>
     ```sh
-    cd to acpd-cms
+    cd to acpd_cms
     ```
 2. Configure the project:
     - Create a `/cms/src/taccsite_cms/secrets.py` with content from ["Stache" secret `APCD DEV CMS`](https://stache.utexas.edu/entry/c6a600467c02fcf0c902c229bd145118).
