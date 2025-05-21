@@ -1,197 +1,93 @@
-# Core-CMS-Custom - CMS Instance
+## APCD Portal
 
-A [Core CMS] project with **custom functionality**
+https://txapcd.org/
 
-## Table of Contents
+## Documentation
 
-- [Related Repositories](#related-repositories)
-- [Project Architecture](#project-architecture)
-- [Prerequisites](#prerequisites)
-- [Create Project](#create-project)
-- [Start Project](#start-project)
-- [Update Project](#update-project)
-- [Run Project](#run-project)
-- [Develop Project](#develop-project)
-- [Build Project](#build-project)
-- [Deploy Project](#deploy-project)
-- [Port Project](#port-project)
-- [Upgrade Project](#upgrade-project)
+> [!TIP]
+> This project is built as a customization of a TACC <abbr title="Content Management System">CMS</abbr> website. To manage this project's CMS, reference [Core-CMS-Template Docs][core-cms-template-docs]. To develop this project's custom code, keep reading.
 
-## Related Repositories
+## Quick Start
 
-- [Camino], a Docker container-based deployment scheme
-- [Core CMS], the base CMS code for TACC WMA CMS Websites
-- [Core Portal], the base Portal code for TACC WMA CMS Websites
-- [Core Styles], the shared UI pattern code for TACC WMA CMS Websites
-- [Core CMS Resources], the old solution for extensions of the [Core CMS] project
-- [Core CMS Custom], custom [Core CMS] code for TACC WMA CMS Websites
-- [Core Portal Deployments], private repository that facilitates deployments of [Core Portal] images via [Camino] and Jenkins
-
-## Project Architecture
-
-Within a `/customproject`**`_cms`** can be:
-
-| directory | contents |
-| - | - |
-| `src/apps` | additional Django applications |
-| `src/taccsite_cms` | settings for [Core CMS], additional apps, static assets, or middleware |
-| `src/taccsite_custom` | templates and static assets, organized as Django CMS expects |
-
-## Prerequisites
-
-- [Docker] ≥ v20
-- [Docker Compose] ≥ v1
-- [Python] ≥ v3.8
-
-> [!IMPORTANT]
-> We recommend you install the Docker Desktop application. Alternatively, you may install both Docker Engine and Docker Compose.
-
-> [!NOTE]
-> Reference [Core CMS](https://github.com/TACC/Core-CMS#prerequisites) for latest prerequisites.
-
-## Create Project
-
-1. Duplicate & Rename the [`example_cms`](./example_cms) directory:
-
+1. Navigate to project directory:\
+    <sup>This is a CMS that contains a Portal client application.</sup>
     ```sh
-    cp -r example_cms customproject_cms
+    cd to acpd_cms
     ```
-
-2. Configure [Core CMS] instance:
-
-    In the new directory, create a `./src/taccsite_cms/settings_local.py` with content from [Core-CMS `settings_local.example.py`](https://github.com/TACC/Core-CMS/blob/main/taccsite_cms/settings_local.example.py).
-
-## Start Project
-
-Set up a local CMS instance.
-
-1. Start [Docker] Containers:
-
+2. Configure the project:
+    - Create a `/cms/src/taccsite_cms/secrets.py` with content from ["Stache" secret `APCD DEV CMS`](https://stache.utexas.edu/entry/c6a600467c02fcf0c902c229bd145118).
+3. Start the CMS website:\
+    <sup>This command will also first build the CMS as needed.</sup>
     ```sh
-    cd customproject_cms
     make start
     ```
-
+4. Navigate to client app:
     ```sh
-    docker exec -it core_cms /bin/bash
-    # This opens a command prompt within the container.
+    cd apcd_cms/src/client
     ```
-
-2. Prepare [Django] Application:
-
-    (Run these commands within the container.)
-
+5. Install dependencies:
     ```sh
-    python manage.py migrate
-    python manage.py createsuperuser
-    # To use default "Username" and skip "Email address", press Enter at both prompts.
-    # At "Password" prompts, you may use an easy-to-remember password.
-    python manage.py collectstatic --no-input
+    npm ci
     ```
-
-3. Enter [Django CMS]:
-    1. Open http://localhost:8000/.
-    2. Login with the credentials you defined in step 2.
-    3. Create one CMS page.\
-        (With "New page" highlighted, click "Next" button.)
-        - This page will automatically be your local homepage.
-
-> [!IMPORTANT]
-> A new local CMS will be empty. It will **not** have content from staging nor production. To have that, follow and adapt instructions to [copy a database](https://tacc-main.atlassian.net/wiki/x/GwBJAg).
-
-> [!IMPORTANT]
-> A new local CMS does **not** include **nor** integrate with an instance of [Core Portal]. There are no reliable instructions to do either. **Help welcome.**
-
-## Update Project
-
-To update an existing CMS instance.
-
-### New Major [Core CMS] Version (or v3.12)
-
-Read [Upgrade Project] for developer instructions.
-
-### New Branch (or Minor or Patch [Core CMS] Version)
-
-1. If CMS Docker files changed, rebuild Docker Containers:
-
+6. Start the client app:
     ```sh
-    cd customproject_cms
-    make stop
-    make build
-    make start
+    npm run dev
     ```
+7. Change code and observe updates live in the browser.
 
-2. If static assets or database models changed[^1], update the Django Application:
 
-    ```sh
-    docker exec -it core_cms /bin/bash
-    # That opens a command prompt within the container.
-        python manage.py migrate
-        python manage.py collectstatic --no-input
-        # If the project has no new/changed assets,
-        # then expect output of "0 static files […]"
-    ```
+## Convert Existing Django App Page to React App Page
 
-[^1]: Pertinent changes are those in the Core CMS or the custom project. Changes to external assets or databases are not pertinent.
+### Backend
 
-## Run Project
+1. Update `urls.py`:
+   - Make the default page return as\
+       `TemplateView.as_view(template_name='<template_name')`
+   - Add API endpoints.\
+       _These endpoints are used in [Client](#client)._
 
-Read the relevant `customproject_cms/README.md`.
+2. Update `views.py`:
+   - `import` `JsonResponse`
+   - Remove Template building.
+   - Adjust context to return `json`.
+   - Send `JsonResponse`.
 
-To run multiple projects, first read [Multiple Projects](./docs/run-project.md#multiple-projects).
 
-## Develop Project
+### Client
 
-Read [Django CMS User Guide] for CMS user instructions.
+1. Define hook:
+    - Add method to retrieve data from server.
+	- Add & Export `type`s in `index.ts`.
 
-Read either of these for developer instructions:
+2. Defining component:
+    - Add one or more components as a `.tsx` file.
+    - Export the component.
+	- Add `export`s in `index.ts`.
 
-| scope | reference |
-| - | - |
-| relevant to any project | [Develop Project](./docs/develop-project.md) |
-| specific to one project | `customproject_cms/README.md` |
+3. Update `apcd_cms/src/client/src/main.tsx`:
+    - `import` the component.
+    - Map (via `componentMap`) a unique ID to the component.
+	
 
-## Build Project
+### Template
 
-Builds result in images that can be deployed. A build alone is not a deploy.
+- Update first line:
+    - from `{% extends "standard.html" %}`
+    - to `{% extends "apcd_cms/templates/standard.html" %}`
+- Add an element where the component will render e.g.
+   ```html
+   <div id="list-registrations-root"></div>
+   ```
 
-| Automatic Build | Manual Build |
-| - | - |
-| Occurs for each custom project directory (e.g. `demdata_cms`) upon each push to `main`. | Follow [GitHub Docs: GitHub Actions: Running a Workflow](https://docs.github.com/en/actions/using-workflows/manually-running-a-workflow#running-a-workflow). |
+   _Give the element its unique `id` as defined in `main.tsx`._
 
-> **Note**
-> To check status of any build, see [Actions](https://github.com/TACC/Core-CMS-Custom/actions).
 
-## Deploy Project
-
-Follow "Deploy" section of [How To Build & Deploy][Deploy Project].
-
-## Port Project
-
-To port a project from [Core CMS Resources], read [Port Project].
-
-## Upgrade Project
-
-To upgrade an existing project, read [Upgrade Project].
 
 
 <!-- Link Aliases -->
 
-[Core Portal Deployments]: https://github.com/TACC/Core-Portal-Deployments
-[Camino]: https://github.com/TACC/Camino
 [Core CMS]: https://github.com/TACC/Core-CMS
-[Core Styles]: https://github.com/TACC/tup-ui/tree/main/libs/core-styles
-[Core CMS Resources]: https://github.com/TACC/Core-CMS-Resources
-[Core Portal]: https://github.com/TACC/Core-Portal
+[Core CMS Template]: https://github.com/TACC/Core-CMS-Template
+[Core Portal Deployments]: https://github.com/TACC/Core-Portal-Deployments
 
-[Docker]: https://docs.docker.com/get-docker/
-[Docker Compose]: https://docs.docker.com/compose/install/
-[Python]: https://www.python.org/downloads/
-[Django]: https://www.djangoproject.com/
-[Django CMS]: https://www.django-cms.org/
-
-[Deploy Project]: https://tacc-main.atlassian.net/wiki/x/cwVv#3.-Deploy
-[Port Project]: ./docs/port-project.md
-[Upgrade Project]: https://github.com/TACC/Core-CMS/blob/main/docs/upgrade-project.md
-
-[Django CMS User Guide]: https://tacc-main.atlassian.net/wiki/x/phdv
+[core-cms-template-docs]: https://github.com/TACC/Core-CMS-Template/blob/v0.1.3/docs/README.md#tacc-custom-cms
