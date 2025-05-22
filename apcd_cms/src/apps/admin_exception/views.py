@@ -65,7 +65,6 @@ class AdminExceptionsApi(APCDAdminAccessAPIMixin, BaseAPIView):
                 'approved_threshold': exception[17],
                 'approved_expiration_date': exception[18],
                 'status': title_case(exception[19]) if exception[19] else 'None',
-                'status': title_case(exception[19]) if exception[19] else 'None',
                 'notes': exception[20],
                 'entity_name': exception[21],
                 'data_file_name': exception[22],
