@@ -27,7 +27,7 @@ class AdminExceptionsApi(APCDAdminAccessAPIMixin, BaseAPIView):
         context = {}
 
         context['header'] = ['Created', 'Entity Organization - Payor Code', 'Requestor Name', 'Exception Type', 'Outcome', 'Status', 'Actions']
-        context['status_options'] = ['All']
+        context['status_options'] = ['All', 'Pending']
         context['org_options'] = ['All']
         context['outcome_modal_options'] = ['None', 'Granted', 'Denied', 'Withdrawn']
         context['status_modal_options'] = ['None', 'Complete', 'Pending']
